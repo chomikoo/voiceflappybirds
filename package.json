@@ -1,0 +1,23 @@
+{
+  "name": "voiceflappybirds",
+  "version": "1.0.0",
+  "description": "Fun with Flappy Bird controllen via microphone",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chomikoo/voiceflappybirds.git"
+  },
+  "keywords": [
+    "flappy",
+    "bird"
+  ],
+  "author": "chomikoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chomikoo/voiceflappybirds/issues"
+  },
+  "homepage": "https://github.com/chomikoo/voiceflappybirds#readme"
+}
