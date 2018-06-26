@@ -1,6 +1,6 @@
 (function(){
 
-	'use strict'
+	'use strict';
 
 	// Variablews 
 
@@ -39,13 +39,11 @@
 		      javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
 
 		      analyser.smoothingTimeConstant = 0.1;
-		      analyser.fftSize = 1024;
+		      analyser.fftSize = 2048;
 
 		      microphone.connect(analyser);
 		      analyser.connect(javascriptNode);
 		      javascriptNode.connect(audioContext.destination);
-
-		      const canvasContext = document.getElementById('canvas').getContext("2d");
 
 		      javascriptNode.onaudioprocess = function() {
 		          let array = new Uint8Array(analyser.frequencyBinCount);
@@ -60,11 +58,11 @@
 		          average = values / length;
 
 		          if (Math.round(average) >= 30) {
-		          		console.log('Up!');
+		          		console.log('Up!' + average);
 		         		moveUp();
 		          }
 
-		        } // end fn stream
+		        };
 		    },
 
 		function(err){
@@ -99,6 +97,9 @@
 	const controls = new Image();
 
 
+	const gap = 100;
+	let fgpos = 0;
+
 
 	 bird.src = 'images/plane.png';
 	 bg.src = 'images/flappybg.png';
@@ -110,14 +111,9 @@
 
 
 
-	const gap = 150;
-	const constant = pipeTop.height + gap;
-
-	let fgpos = 0;
-
 
 	// Controls
-	document.addEventListener('keydown' , (e) => { if(e.keyCode === 32){moveUp();}});
+	document.addEventListener('keydown' , (e) => { if(e.keyCode === 32){moveUp(25);}});
 	document.addEventListener('keydown' , (e) => { if(e.keyCode === 13){run();}});
 	document.addEventListener('click' , run);
 
@@ -127,8 +123,9 @@
 		ctx.drawImage(controls, canvas.width/2-start.width/2, canvas.height - controls.height - fg.height);
 	}
 
-	function moveUp(average) {
-		bY -= 25;
+	function moveUp(up = 20) {
+		console.log(up);
+		bY -= up;
 	}  
 
 	function movingBg() {
@@ -167,16 +164,15 @@
 		for(let i = 0; i < pipe.length; i++) {
 	
 			ctx.drawImage(pipeTop, pipe[i].x, pipe[i].y);
-			ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + constant);
+			ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeTop.height + gap);
+
 
 			pipe[i].x--;			
-			if( pipe[i].x == (canvas.width - 200) ){
-				// console.log('x ' +  Math.floor(Math.random() * pipeTop.height) - pipeTop.height);
+			if( pipe[i].x === (canvas.width - 200) ){
 				pipe.push({
 					x: canvas.width,
 					y: Math.floor(Math.random() * pipeTop.height) - pipeTop.height,
 				})
-				console.log(pipe);
 			}
 
 
@@ -184,7 +180,7 @@
 
 			if( bX + bird.width >= pipe[i].x && 
 				bX <= pipe[i].x + pipeTop.width && 
-				(bY <= pipe[i].y + pipeTop.height || bY + bird.height >= pipe[i].y + constant) || 
+				(bY <= pipe[i].y + pipeTop.height || bY + bird.height >= pipe[i].y + pipeTop.height + gap) || 
 				bY + bird.height >= canvas.height - fg.height) {
 
 			
