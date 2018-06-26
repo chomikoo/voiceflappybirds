@@ -25,9 +25,14 @@ gulp.task( 'scripts', function () {
 			'./src/js/app.js'
 		] )
 		.pipe( $.plumber() )
-		.pipe( $.babel() )
+		// .pipe( $.babel() )
 		.pipe( $.concat( 'app.js' ) )
 		// .pipe( $.uglify() )
+		.pipe($.babili({
+			mangle: {
+				keepClassName: true
+			}
+		}))
 		.pipe( gulp.dest( 'dist/js' ) )
 		.pipe( browserSync.reload( {stream: true} ) );
 } );
